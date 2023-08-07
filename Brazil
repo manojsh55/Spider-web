@@ -12,30 +12,24 @@ Year: 2022, 2021, 2020, 2019, 2018
 Coffee <- read.csv("C:/Users/dell/OneDrive - Kansas State University/EUDR/Data/Brazil/Coffee.csv")
 
 ##Total export of coffee in the world
-export_coffee_World <- Coffee %>% filter(ReporterDesc == "World", FlowDesc == "Export", PartnerDesc == "World") %>% summarize(export_coffee_World == mean(PrimaryValue)) 
+
+export_coffee_World <- Coffee %>% filter(ReporterDesc == "World", FlowDesc == "Export", PartnerDesc == "World") %>% summarize(export_coffee_World == sum(PrimaryValue)) 
 
 ##Total export of coffee from Brazil 
-export_coffee_Brazil <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "World") %>% summarize(export_coffee_Brazil == mean(PrimaryValue)) 
+export_coffee_Brazil <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "World") %>% summarize(export_coffee_Brazil == sum(PrimaryValue)) 
+
+##Market share of Brazil in Coffee
+marketshare_coffee_Brazil <- export_coffee_Brazil$export_coffee_Brazil/(export_coffee_World$export_coffee_World)
 
 ##Total export of coffee from Brazil to European Union including the United Kingdom
 
-import_coffee_EU <- Coffee %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "World") %>% summarize(import_coffee_EU == mean(PrimaryValue)) 
+import_coffee_EU <- Coffee %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "World") %>% summarize(import_coffee_EU == sum(PrimaryValue)) 
 
-import_coffee_EU_Brazil <- Coffee %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "Brazil") %>% summarize(import_coffee_EU == mean(PrimaryValue)) 
+import_coffee_EU_Brazil <- Coffee %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "Brazil") %>% summarize(import_coffee_EU == sum(PrimaryValue)) 
 
-marketshare_coffee_europe <- (import_coffee_EU_Brazil$import_coffee_EU/(import_coffee_EU$import_coffee_EU)
-
-
+marketshare_coffee_brazil_EU <- import_coffee_EU_Brazil$import_coffee_EU/(import_coffee_EU$import_coffee_EU)
 
 
-
-
-
-
-
-share_Brazil <- filter(PartnerDesc == "Brazil") <- 
-
-Market share to the world
 
 
 
