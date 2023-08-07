@@ -21,7 +21,7 @@ export_coffee_Brazil <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == 
 ##Market share of Brazil in Coffee
 marketshare_coffee_Brazil <- export_coffee_Brazil$export_coffee_Brazil/(export_coffee_World$export_coffee_World)
 
-##Total export of coffee from Brazil to European Union including the United Kingdom
+##Total export of coffee from Brazil to the European Union including the United Kingdom
 
 import_coffee_EU <- Coffee %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "World") %>% summarize(import_coffee_EU == sum(PrimaryValue)) 
 
@@ -34,5 +34,31 @@ marketshare_coffee_brazil_EU <- import_coffee_EU_Brazil$import_coffee_EU/(import
 
 
 
+
+##
+
+install.packages("fmsb")
+library(fmsb)
+data <- as.data.frame(matrix( sample( 2:20 , 10 , replace=T) , ncol=10))
+colnames(data) <- c("math" , "english" , "biology" , "music" , "R-coding", "data-viz" , "french" , "physic", "statistic", "sport" )
+ 
+# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
+data <- rbind(rep(20,10) , rep(0,10) , data)
+ 
+# Check your data, it has to look like this!
+# head(data)
+
+# Custom the radarChart !
+radarchart( data  , axistype=1 , 
+ 
+    #custom polygon
+    pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=4 , 
+ 
+    #custom the grid
+    cglcol="grey", cglty=1, axislabcol="grey", caxislabels=seq(0,20,5), cglwd=0.8,
+ 
+    #custom labels
+    vlcex=0.8 
+    )
 
 
