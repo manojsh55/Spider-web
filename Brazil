@@ -32,7 +32,7 @@ import_coffee_EU_Brazil <- Coffee %>% filter(ReporterDesc == c("European Union",
 export_coffee_Brazil <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "World") %>% pull(PrimaryValue) %>% sum()
 marketshare_coffee_brazil_EU <- import_coffee_EU_Brazil/export_coffee_Brazil
 
-##1.3. Share of Brazilian exports to China and the USA
+    ##Share of Brazilian exports to China and the USA
 export_coffee_Brazil_China <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "China") %>% pull(PrimaryValue) %>% sum()
 export_coffee_Brazil_USA <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "USA") %>% pull(PrimaryValue) %>% sum()
 marketshare_coffee_brazil_China <- export_coffee_Brazil_China/export_coffee_Brazil
@@ -42,6 +42,68 @@ export_coffee_Brazil_China_qty <- Coffee %>% filter(ReporterDesc == "Brazil", Fl
 export_coffee_Brazil_USA_qty <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "USA") %>% pull(Qty) %>% sum()
 marketshare_coffee_brazil_China <- export_coffee_Brazil_China_qty/export_coffee_Brazil_qty
 marketshare_coffee_brazil_USA_qty <- export_coffee_Brazil_USA_qty/export_coffee_Brazil_qty
+
+##1.3 Coverage of VSS
+vss_coffee_brazil <- 0.33 
+
+##1.4. Smallholder dominance in coffee production
+
+small_coffee <- 0.341 ##Source: IBGE 2019
+
+##1.5. Deforestation associated with coffee production
+Def_coffee_brazil <- 0.0013  ##source: Pendrill et al 2020
+
+
+##2. Soya
+Soya_production <- read.csv("C:/Users/Manoj/OneDrive - Kansas State University/EUDR/Data/Brazil/Soya_production.csv")  ##Source: FAOSTAT
+Soya <- read.csv("C:/Users/Manoj/OneDrive - Kansas State University/EUDR/Data/Brazil/Soya.csv")      ##Source: UN Comtrade
+
+##2.1. Share of Brazilian production exported
+export_soya_Brazil_qty <- Soya %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "World") %>% pull(Qty) %>% sum()
+soya_production <- Soya_production %>% pull(Value) %>% sum()*1000
+share_Brazil_production_export <- export_soya_Brazil_qty/soya_production 
+
+##2.2. Share of Brazilian exports to the UK and the EU
+import_soya_EU_Brazil_qty <- Soya %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "Brazil") %>% pull(Qty) %>% sum()
+marketshare_soya_brazil_EU_qty <- import_soya_EU_Brazil_qty/export_soya_Brazil_qty
+
+
+import_soya_EU_Brazil <- Soya %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "Brazil") %>% pull(PrimaryValue) %>% sum()
+export_soya_Brazil <- Soya %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "World") %>% pull(PrimaryValue) %>% sum()
+marketshare_soya_brazil_EU <- import_soya_EU_Brazil/export_soya_Brazil
+
+    ##Share of Brazilian exports to China and the USA
+export_soya_Brazil_China <- Soya %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "China") %>% pull(PrimaryValue) %>% sum()
+export_soya_Brazil_USA <- Soya %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "USA") %>% pull(PrimaryValue) %>% sum()
+marketshare_soya_brazil_China <- export_soya_Brazil_China/export_soya_Brazil
+marketshare_soya_brazil_USA <- export_soya_Brazil_USA/export_soya_Brazil
+
+export_soya_Brazil_China_qty <- Soya %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "China") %>% pull(Qty) %>% sum()
+export_soya_Brazil_USA_qty <- Soya %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "USA") %>% pull(Qty) %>% sum()
+marketshare_soya_brazil_China <- export_soya_Brazil_China_qty/export_soya_Brazil_qty
+marketshare_soya_brazil_USA_qty <- export_soya_Brazil_USA_qty/export_soya_Brazil_qty
+
+##2.3 Coverage of VSS
+vss_soya_brazil <- 
+
+##2.4. Smallholder dominance in soya production
+
+small_soya <-  ##Source: IBGE 2019
+
+##2.5. Deforestation associated with soya production
+Def_soya_brazil <-  ##source: Pendrill et al 2020
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
