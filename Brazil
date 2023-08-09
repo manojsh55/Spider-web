@@ -23,6 +23,12 @@ export_coffee_Brazil_qty <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc
 coffee_production <- Coffee_production %>% pull(Value) %>% sum()*1000
 share_Brazil_production_export <- export_coffee_Brazil_qty/coffee_production 
 
+export_coffee_Brazil_qty <- Coffee %>% filter(ReporterDesc == "Brazil", FlowDesc == "Export", PartnerDesc == "World") %>% pull(NetWgt) %>% sum()
+coffee_production <- Coffee_production %>% filter(Year == 2021) %>% pull(Value)*1000
+share_Brazil_production_export <- export_coffee_Brazil_qty/coffee_production 
+
+
+
 ##1.2. Share of Brazilian exports to the UK and the EU
 import_coffee_EU_Brazil_qty <- Coffee %>% filter(ReporterDesc == c("European Union", "United Kingdom"), FlowDesc == "Import", PartnerDesc == "Brazil") %>% pull(Qty) %>% sum()
 marketshare_coffee_brazil_EU_qty <- import_coffee_EU_Brazil_qty/export_coffee_Brazil_qty
@@ -84,14 +90,14 @@ marketshare_soya_brazil_China <- export_soya_Brazil_China_qty/export_soya_Brazil
 marketshare_soya_brazil_USA_qty <- export_soya_Brazil_USA_qty/export_soya_Brazil_qty
 
 ##2.3 Coverage of VSS
-vss_soya_brazil <- 
+vss_soya_brazil <- 0.05
 
 ##2.4. Smallholder dominance in soya production
 
-small_soya <-  ##Source: IBGE 2019
+small_soya <- 0.071 ##Source: IBGE 2019
 
 ##2.5. Deforestation associated with soya production
-Def_soya_brazil <-  ##source: Pendrill et al 2020
+Def_soya_brazil <- 0.129 ##source: Pendrill et al 2020
 
 
 
@@ -168,7 +174,6 @@ marketshare_cocoa_brazil_USA_qty <- export_cocoa_Brazil_USA_qty/export_cocoa_Bra
 vss_cocoa_brazil <- 0.023
 
 ##4.4. Smallholder dominance in cocoa production
-
 small_cocoa <- 0.509 ##Source: IBGE 2019
 
 ##4.5. Deforestation associated with cocoa production
@@ -209,11 +214,11 @@ marketshare_palm_brazil_USA_qty <- export_palm_Brazil_USA_qty/export_palm_Brazil
 vss_palm_brazil <- 0.272
 
 ##5.4. Smallholder dominance in palm production
-
 small_palm <- 0.403  ##Source: IBGE 2019
 
 ##5.5. Deforestation associated with palm production
 Def_palm_brazil <- 0.002 ##source: Pendrill et al 2020
+
 
 
 ##6. Wood
@@ -257,30 +262,67 @@ Def_wood_brazil <- 0.152 ##source: Pendrill et al 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-##
+## Radar chart
 
 install.packages("fmsb")
 library(fmsb)
-data <- as.data.frame(matrix( sample( 2:20 , 10 , replace=T) , ncol=10))
-colnames(data) <- c("math" , "english" , "biology" , "music" , "R-coding", "data-viz" , "french" , "physic", "statistic", "sport" )
- 
-# To use the fmsb package, I have to add 2 lines to the dataframe: the max and min of each topic to show on the plot!
-data <- rbind(rep(20,10) , rep(0,10) , data)
- 
-# Check your data, it has to look like this!
-# head(data)
+comp_brazil <- data.frame(
+    row.names = c("Cattle", "Cocoa", "Coffee", "Oil Palm", "Soy", "Wood"),
+    vss = c(vss_cattle_brazil, vss_cocoa_brazil, vss_coffee_brazil, vss_palm_brazil, vss_soya_brazil, vss_wood_brazil),
+    small = c(small_cattle, small_cocoa, small_coffee, small_palm, small_soya, small_wood),
+    def = c(Def_cattle_brazil, Def_cocoa_brazil, Def_coffee_brazil, Def_palm_brazil, Def_soya_brazil, Def_wood_brazil)
+)  
+
+comp_brazil_t <- data.frame(t(comp_brazil))
+
+max_min <- data.frame(
+  Cattle = c(1, 0), Cocoa= c(1, 0), Coffee = c(1, 0), Oil.Palm = c(1, 0), Soy = c(1, 0), Wood = c(1, 0) 
+ )
+
+rownames(max_min) <- c("Max", "Min")
+df <- rbind(max_min, comp_brazil_t)
+cattle_data <- df[c("Max", "Min", "Cattle"), ]
+radarchart(cattle_data)
+
+##Generate function
+
+create_beautiful_radarchart <- function(data, color = "#00AFBB", 
+                                        vlabels = colnames(data), vlcex = 0.7,
+                                        caxislabels = NULL, title = NULL, ...){
+  radarchart(
+    data, axistype = 1,
+    # Customize the polygon
+    pcol = color, pfcol = scales::alpha(color, 0.5), plwd = 2, plty = 1,
+    # Customize the grid
+    cglcol = "grey", cglty = 1, cglwd = 0.8,
+    # Customize the axis
+    axislabcol = "grey", 
+    # Variable labels
+    vlcex = vlcex, vlabels = vlabels,
+    caxislabels = caxislabels, title = title, ...
+  )
+}
+
+# Reduce plot margin using par()
+op <- par(mar = c(1, 2, 2, 2))
+# Create the radar charts
+create_beautiful_radarchart(
+  data = df, caxislabels = c(0, 5, 10),
+  color = c("#00AFBB", "#E7B800", "#FC4E07")
+)
+# Add an horizontal legend
+legend(
+  x = "bottom", legend = rownames(df[-c(1,2),]), horiz = TRUE,
+  bty = "n", pch = 20 , col = c("#00AFBB", "#E7B800", "#FC4E07"),
+  text.col = "black", cex = 1, pt.cex = 1.5
+  )
+par(op)
+
+
+
+
+
+
 
 # Custom the radarChart !
 radarchart( data  , axistype=1 , 
@@ -296,3 +338,4 @@ radarchart( data  , axistype=1 ,
     )
 
 
+radarchart(comp_brazil, )
